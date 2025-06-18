@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  title: VAT Validation API
+  version: 1.0.0
+  description: Validates EU and Swiss VAT numbers based on country-specific adapters.
+tags:
+  - name: vat
+    description: Operations related to VAT number validation
+paths:
+  /vat/validate:
+    post:
+      summary: Validate a VAT number
+      tags:
+        - vat
+      description: Validates a VAT number against the specified country adapter.
+      operationId: validateVat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateVatRequest'
+      responses:
+        200:
+          description: Successful validation of the VAT number.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateVatResponse'
+        400:
+          description: Bad request, possibly due to missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateVatBadRequestResponse'
+        500:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateVatInternalServerErrorResponse'
+        501:
+          description: Not implemented for the specified country code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateVatNotImplementedResponse'
+
+components:
+  schemas:
+    ValidateVatRequest:
+      type: object
+      properties:
+        vat:
+          type: string
+          description: The VAT number to validate.
+        countryCode:
+          type: string
+          description: The country code of the VAT number (e.g., 'DE' for Germany).
+      required:
+        - vat
+        - countryCode
+    ValidateVatResponse:
+      type: object
+      properties:
+        validated:
+          type: boolean
+          description: Indicates whether the VAT number is valid.
+          example: true
+        details:
+          type: string
+          description: A message providing additional information about the validation result.
+          example: "VAT number is valid for the given country code."
+    ValidateVatBadRequestResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            formErrors:
+                type: array
+                items:
+                    type: string
+                description: List of validation errors.
+            fieldErrors:
+                type: object
+                properties:
+                    vat:
+                        type: array
+                        items:
+                            type: string
+                        description: List of errors related to the VAT field.
+                    countryCode:
+                      type: array
+                      items:
+                        type: string
+                      description: List of errors related to the VAT field.
+                description: List of field-specific validation errors.
+      example:
+        error:
+          formErrors: ["VAT format is invalid for country code CH"]
+          fieldErrors:
+            vat: ["Required"]
+            countryCode: ["Required"]
+    ValidateVatNotImplementedResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            formErrors:
+              type: array
+              items:
+                type: string
+              description: List of validation errors.
+            fieldErrors:
+              type: object
+              properties:
+                vat:
+                  type: array
+                  items:
+                    type: string
+                  description: List of errors related to the VAT field.
+                countryCode:
+                  type: array
+                  items:
+                    type: string
+                  description: List of errors related to the VAT field.
+              description: List of field-specific validation errors.
+      example:
+        error:
+          formErrors: []
+          fieldErrors:
+            countryCode: [ "County code not implemented: CI" ]
+    ValidateVatInternalServerErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Error message providing details about the internal server error.
+      example:
+        error:
+          code: "500"
+          message: "Internal Server Error: Timeout"

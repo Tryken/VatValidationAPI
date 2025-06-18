@@ -39,7 +39,9 @@ export const readAppConfiguration = (file: string): Configuration => {
     fs.readFileSync(file, 'utf-8')
   ) as Configuration;
 
-  configuration.port = configuration.port || 3000;
+  configuration.port = process.env.PORT
+    ? parseInt(process.env.PORT)
+    : (configuration.port ?? 3000);
 
   return configuration;
 };

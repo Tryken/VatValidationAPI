@@ -28,7 +28,7 @@ export class ChVatApiAdapterImpl implements IVatApiAdapter {
 
         const validVatNumberFunction = client['ValidateVatNumber'] as
           | ((
-              vatNumber: string,
+              request: { vatNumber: string },
               callback: (error: string, result: ChCheckVatResponseDto) => void
             ) => void)
           | undefined;
@@ -41,10 +41,11 @@ export class ChVatApiAdapterImpl implements IVatApiAdapter {
         }
 
         validVatNumberFunction(
-          vatNumber,
+          { vatNumber },
           (error: string, result: ChCheckVatResponseDto) => {
             if (error)
               reject(new Error(`Failed to check VAT number: ${error}`));
+
             resolve(result.ValidateVatNumberResult ?? false);
           }
         );
