@@ -17,7 +17,7 @@ This service abstracts the differences between both systems by:
 - Returning a unified and normalized response structure, regardless of the upstream system.
 - Simplifying integration with internal tools, CRMs, or web backends.
 
-By acting as a gateway between modern applications and government VAT services, this project reduces complexity, eliminates boilerplate code, and ensures consistent validation across both EU and Swiss jurisdictions.
+By acting as a gateway between modern applications and government VAT services, this project reduces complexity, eliminates boilerplate code, and ensures consistent validation across both EU and Swiss.
 
 ## Features
 
@@ -63,7 +63,6 @@ The project defines the following scripts:
 ```bash
 pnpm dev
 ```
-
 Or, if you want to watch file changes
 
 ```bash
@@ -113,7 +112,7 @@ Response 200 OK (application/json)
 
 ### Environment Variables
 
-Create a `.env` file in the project root with the following variables:
+Add the following env variables:
 
 ```env
 PORT=3000
@@ -162,7 +161,7 @@ This service can be configured using a `configurations/configuration.json` file 
 | `port`                  | number | no       | The port the service should listen on (e.g. `3000`).         |
 | `expressServerOptions`  | object | no       | Options for the internal HTTP server. See below for details. |
 | `supportedCountryCodes` | object | no       | List of supported country codes with validation regex.       |
-| `adapter`               | object | no       | Adapter settings for EU and CH VAT validation backends.      |
+| `adapter`               | object | no       | Adapter settings for EU and CH vat validation backends.      |
 
 ### Express Server Options
 Optional fine-tuning of the HTTP server (based on Node.js Server settings).
