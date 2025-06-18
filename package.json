@@ -16,7 +16,7 @@
   "scripts": {
     "build": "npx tsc --project tsconfig.build.json",
     "dev": "pnpm run build && NODE_ENV=dev pnpm run start",
-    "watch": "pnpm run build && NODE_ENV=dev nodemon ./build/app",
+    "watch": "nodemon",
     "start": "NODE_ENV=prod node --trace-warnings build/app",
     "lint": "eslint source/**/*.ts",
     "format": "eslint source/**/*.ts --fix",

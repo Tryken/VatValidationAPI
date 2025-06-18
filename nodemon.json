@@ -1,0 +1,6 @@
+{
+  "watch": ["source"],
+  "ext": "ts",
+  "ignore": ["build"],
+  "exec": "pnpm run dev"
+}
